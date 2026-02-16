@@ -304,7 +304,7 @@ ARTIST — BOTTOM CINEMATIC ANCHOR
 
 .artist{
 position:absolute;
-bottom:-2vh;
+bottom:0vh;
 left:50%;
 transform:translateX(-50%);
 z-index:4;
