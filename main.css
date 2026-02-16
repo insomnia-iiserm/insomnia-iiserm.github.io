@@ -472,9 +472,12 @@ MOBILE OPTIMIZATION
 bottom:-2vh;
 }
 
-.artist img{
-min-width:100%;
-max-height: 50vh;
+.artist img{    
+    height: 60vh !important; /* Fixed height to keep heads from cutting */
+    width: auto;
+    min-width: 140%; /* WIDER than screen for the "pan" effect */
+    object-fit: contain;
+    filter: drop-shadow(0 0 30px rgba(0,0,0,0.8));
 }
 
 /* text */
