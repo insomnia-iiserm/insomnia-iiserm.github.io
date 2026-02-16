@@ -1739,7 +1739,7 @@ height:40px;
 
     /* 2. Scale down the artist image so it doesn't push info off-screen */
     .artist img {
-        max-height: 45vh !important; 
+        max-width: 100% !important; 
         object-position: top;
     }
 
