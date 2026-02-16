@@ -1386,3 +1386,344 @@ height:40px;
         height: 450px; /* Headliner slightly taller */
     }
 }
+
+/* =========================================
+   TEAM SECTION STYLES
+   ========================================= */
+.team-section {
+    padding: 100px 0;
+    background: #000;
+    overflow: hidden;
+}
+
+.team-header-block {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.team-subtitle {
+    font-family: 'Orbitron';
+    color: #F4C430;
+    letter-spacing: 5px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.team-scroll-container {
+    width: 100%;
+    overflow-x: auto;
+    padding: 20px 5vw;
+    scrollbar-width: none;
+}
+
+.team-scroll-container::-webkit-scrollbar { display: none; }
+
+.team-wrapper {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+}
+
+/* --- MEMBER CARD --- */
+.member-card {
+    width: 300px;
+    height: 400px;
+    background: #111;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: 0.4s ease;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
+}
+
+.member-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.member-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) brightness(0.6);
+    transition: 0.5s ease;
+}
+
+.member-card:hover img {
+    filter: grayscale(0%) brightness(1);
+    transform: scale(1.05);
+}
+
+/* INFO OVERLAY */
+.member-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 20px;
+    background: linear-gradient(to top, #000 60%, transparent);
+    z-index: 2;
+    transform: translateY(20px);
+    transition: 0.4s ease;
+}
+
+.member-card:hover .member-info {
+    transform: translateY(0);
+}
+
+.member-role {
+    font-family: 'Orbitron';
+    color: #F4C430;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+.member-info h3 {
+    font-family: 'Orbitron';
+    color: #fff;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.member-socials {
+    font-family: 'Montserrat';
+    font-size: 0.7rem;
+    color: #666;
+    letter-spacing: 1px;
+    opacity: 0;
+    transition: 0.3s ease 0.2s;
+}
+
+.member-card:hover .member-socials {
+    opacity: 1;
+}
+
+.member-socials a { color: #fff; text-decoration: none; }
+.member-socials a:hover { color: #F4C430; }
+
+/* Glitch Accent */
+.glitch-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    border: 0px solid #F4C430;
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+.member-card:hover .glitch-overlay {
+    border-width: 2px;
+    box-shadow: inset 0 0 15px rgba(244, 196, 48, 0.2);
+}
+
+@media (max-width: 768px) {
+    .member-card { width: 250px; height: 350px; }
+    .member-info { transform: translateY(0); }
+    .member-socials { opacity: 1; }
+}
+/* =========================================
+   CONTACT SECTION STYLES
+   ========================================= */
+.contact-section {
+    padding: 100px 20px;
+    background: #050505;
+    position: relative;
+}
+
+.contact-header { text-align: center; margin-bottom: 60px; }
+.contact-subtitle { 
+    font-family: 'Orbitron'; 
+    color: #F4C430; 
+    letter-spacing: 5px; 
+    font-size: 0.8rem; 
+    margin-top: 10px;
+}
+
+.contact-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+/* CARDS */
+.comms-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+}
+
+.comms-card:hover {
+    border-color: #F4C430;
+    background: rgba(244, 196, 48, 0.05);
+    transform: translateX(10px);
+}
+
+.comms-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #1DB954; /* Green for online */
+    border-radius: 50%;
+    box-shadow: 0 0 10px #1DB954;
+    animation: pulse 1.5s infinite;
+}
+
+.role {
+    font-family: 'Orbitron';
+    font-size: 0.7rem;
+    color: #888;
+    letter-spacing: 2px;
+}
+
+.comms-card h3 {
+    font-family: 'Orbitron';
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.comms-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.comms-links a {
+    color: #ccc;
+    font-family: 'Montserrat';
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.comms-links a:hover { color: #F4C430; }
+
+/* SIDEBAR */
+.sidebar-box {
+    background: rgba(20, 20, 20, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.sidebar-box h4 {
+    font-family: 'Orbitron';
+    color: #F4C430;
+    font-size: 0.8rem;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+.social-icons { display: flex; flex-direction: column; gap: 10px; }
+.social-icons a {
+    color: #fff;
+    font-family: 'Orbitron';
+    font-size: 0.75rem;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.social-icons a:hover { letter-spacing: 2px; color: #F4C430; }
+
+.sidebar-box p { color: #888; font-family: 'Montserrat'; font-size: 0.85rem; line-height: 1.6; }
+
+@media (max-width: 768px) {
+    .contact-container { grid-template-columns: 1fr; }
+}
+
+/* =========================================
+   MINIMALIST TEAM (DOSSIER STYLE)
+   ========================================= */
+.team-section {
+    padding: 100px 20px;
+    background: #000;
+    text-align: center;
+}
+
+.dossier-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.dossier-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px 20px;
+    position: relative;
+    text-align: left;
+    transition: all 0.4s ease;
+    /* Cyber-cut corner */
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 90% 100%, 0 100%);
+}
+
+.dossier-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 2px; height: 0%;
+    background: #F4C430;
+    transition: 0.4s ease;
+}
+
+.dossier-card:hover {
+    background: rgba(244, 196, 48, 0.05);
+    border-color: #F4C430;
+    transform: translateY(-5px);
+}
+
+.dossier-card:hover::before {
+    height: 100%;
+}
+
+.dossier-id {
+    font-family: 'Orbitron', sans-serif;
+    color: #666;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.dossier-name {
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.dossier-status {
+    font-family: 'Montserrat', sans-serif;
+    color: #1DB954; /* Success Green */
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    opacity: 0.8;
+}
+
+.dossier-card:hover .dossier-name {
+    color: #F4C430;
+    text-shadow: 0 0 10px rgba(244, 196, 48, 0.3);
+}
+
+@media (max-width: 768px) {
+    .dossier-card {
+        padding: 30px 20px;
+    }
+}

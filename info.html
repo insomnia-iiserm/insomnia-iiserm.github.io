@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Survival Guide | Insomnia 2026</title>
+<link rel="stylesheet" href="./main.css">
+<style>
+    /* PAGE SPECIFIC */
+    body { background: #050505; overflow-y: auto; }
+    .info-header { text-align: center; padding-top: 140px; margin-bottom: 60px; }
+    .info-title { font-family: 'Henny Penny'; font-size: 3.5rem; color: transparent; -webkit-text-stroke: 1px #F4C430; }
+
+    /* TABS */
+    .terminal-container { max-width: 900px; margin: 0 auto 100px; padding: 20px; }
+    .terminal-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333; }
+    .tab-btn { padding: 15px 30px; background: rgba(255,255,255,0.05); color: #888; border: none; font-family: 'Orbitron'; cursor: pointer; transition: 0.3s; clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%); }
+    .tab-btn.active { background: #F4C430; color: #000; font-weight: bold; }
+
+    /* CONTENT BOX */
+    .terminal-screen { 
+        background: rgba(10, 10, 10, 0.8); border: 1px solid #333; padding: 40px; min-height: 400px; 
+        font-family: 'Montserrat'; color: #ccc; line-height: 1.6; border-radius: 0 0 10px 10px;
+        box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    }
+    .info-section { display: none; animation: fadeIn 0.5s; }
+    .info-section.active { display: block; }
+    
+    h3 { color: #F4C430; font-family: 'Orbitron'; margin-bottom: 15px; border-left: 3px solid #F4C430; padding-left: 10px; }
+    ul { list-style: none; padding: 0; }
+    li { margin-bottom: 10px; padding-left: 20px; position: relative; }
+    li::before { content: '>'; position: absolute; left: 0; color: #F4C430; }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<nav class="glass-nav">
+    <div class="nav-left nav-menu"><a href="./index.html">Home</a></div>
+    <div class="nav-center"><div class="logo-circle"><img src="./logo.png"></div></div>
+    <div class="nav-right nav-menu"><a href="./events/index.html">Schedule</a></div>
+</nav>
+
+<div class="info-header">
+    <h1 class="info-title">SURVIVAL GUIDE</h1>
+    <p style="color:#666; font-family:'Orbitron'">PROTOCOL FOR ATTENDEES</p>
+</div>
+
+<div class="terminal-container">
+    <div class="terminal-tabs">
+        <button class="tab-btn active" onclick="openTab('location')">LOCATION</button>
+        <button class="tab-btn" onclick="openTab('faq')">FAQ</button>
+        <button class="tab-btn" onclick="openTab('rules')">RULES</button>
+    </div>
+
+    <div class="terminal-screen">
+        
+        <div id="location" class="info-section active">
+            <h3>COORDINATES</h3>
+            <p>IISER Mohali, Knowledge City, Sector 81, SAS Nagar, Manauli PO, Punjab 140306.</p>
+            <br>
+            <h3>HOW TO REACH</h3>
+            <ul>
+                <li><strong>By Air:</strong> Chandigarh International Airport (IXC) is 10km away.</li>
+                <li><strong>By Train:</strong> Mohali Railway Station (SAS Nagar) is the nearest. Chandigarh Station is 15km away.</li>
+                <li><strong>By Road:</strong> We are located on the Airport Road. Use Uber/Ola to "IISER Mohali Gate 1".</li>
+            </ul>
+        </div>
+
+        <div id="faq" class="info-section">
+            <h3>FREQUENTLY ASKED QUESTIONS</h3>
+            <p><strong>Q: Is entry free?</strong><br>A: Yes, entry is free for all college students with a valid ID card.</p>
+            <br>
+            <p><strong>Q: Can I bring a camera?</strong><br>A: DSLRs are allowed, but drones are strictly prohibited without prior permission.</p>
+            <br>
+            <p><strong>Q: Is accommodation provided?</strong><br>A: Accommodation is available for registered participants only. Contact the hospitality team.</p>
+        </div>
+
+        <div id="rules" class="info-section">
+            <h3>CODE OF CONDUCT</h3>
+            <ul>
+                <li>Valid College ID is mandatory for entry.</li>
+                <li>Alcohol, drugs, and weapons are strictly prohibited. Zero tolerance policy.</li>
+                <li>Any form of harassment or misconduct will lead to immediate expulsion.</li>
+                <li>Respect the campus property and green zones.</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function openTab(tabName) {
+    document.querySelectorAll('.info-section').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
+    document.getElementById(tabName).classList.add('active');
+    event.currentTarget.classList.add('active');
+}
+</script>
+
+</body>
+</html>
