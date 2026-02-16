@@ -469,11 +469,11 @@ MOBILE OPTIMIZATION
 
 /* big cinematic artist */
 .artist{
-bottom:-12vh;
+bottom:-2vh;
 }
 
 .artist img{
-height:110vh;
+width:100%;
 }
 
 /* text */
@@ -520,6 +520,8 @@ text-align:center;
 }
 
 }
+
+
 
 
 /* ================= SECTION TITLE ================= */
@@ -1728,51 +1730,3 @@ height:40px;
     }
 }
 
-@media (max-width: 768px) {
-    /* 1. Pull the Hero Content up */
-    .hero {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start; /* Shift from center to top */
-        padding-top: 100px; /* Space for the logo */
-    }
-
-    /* 2. Scale down the artist image so it doesn't push info off-screen */
-    .artist img {
-        max-width: 100% !important; 
-        object-position: top;
-    }
-
-    /* 3. Tighten the Artist Info positioning */
-    .artist-info {
-        position: relative;
-        bottom: 20px; /* Reduced from 50px+ */
-        margin-top: -30px; /* Pulls text over the bottom of the image */
-        z-index: 10;
-    }
-
-    .artist-info h2 {
-        font-size: 2rem !important;
-        margin-bottom: 5px;
-    }
-
-    /* 4. Compact Spotify Player */
-    .spotify-player {
-        margin-top: 10px !important; /* Tighten gap between venue and player */
-        transform: scale(0.9); /* Slightly smaller to fit better */
-        margin-bottom: 10px;
-    }
-
-    /* 5. Next Button Positioning */
-    .reveal-btn {
-        margin-top: 15px !important;
-        padding: 10px 30px !important;
-        font-size: 0.8rem !important;
-    }
-
-    /* 6. Adjust the Counter (Top Right) */
-    .lineup-counter {
-        top: 90px !important; /* Move down slightly so it doesn't hit the logo */
-        right: 20px !important;
-    }
-}
