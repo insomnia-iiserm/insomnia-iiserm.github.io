@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schedule | Insomnia 2026</title>
+
+<link rel="stylesheet" href="../main.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Henny+Penny&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<style>
+/* =========================================
+   PAGE SPECIFIC STYLES
+   ========================================= */
+:root {
+    --primary: #F4C430;
+    --accent: #1DB954;
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    overflow-y: auto !important; /* Force scroll */
+    background: #050505;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Background Override */
+.bg-fixed {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.85), #000), url('../img3.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* --- PAGE HEADER --- */
+.page-header {
+    padding-top: 140px;
+    padding-bottom: 40px;
+    text-align: center;
+}
+
+.page-title {
+    font-family: 'Henny Penny', cursive;
+    font-size: 4rem;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--primary);
+    text-shadow: 0 0 20px rgba(244, 196, 48, 0.3);
+    margin-bottom: 10px;
+}
+
+.page-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    color: #888;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+}
+
+/* --- FILTER BUTTONS --- */
+.filter-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+    padding: 0 20px;
+}
+
+.filter-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    color: #ccc;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    backdrop-filter: blur(5px);
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background: var(--primary);
+    color: #000;
+    box-shadow: 0 0 15px rgba(244, 196, 48, 0.5);
+    border-color: var(--primary);
+}
+
+/* --- TIMELINE STYLES --- */
+.timeline-container {
+    max-width: 900px;
+    margin: 0 auto 60px; /* Adjusted for footer */
+    position: relative;
+    padding: 0 20px;
+    flex: 1;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--primary), transparent);
+    transform: translateX(-50%);
+    opacity: 0.3;
+}
+
+.day-separator {
+    text-align: center;
+    margin: 60px 0 40px;
+    position: relative;
+    z-index: 2;
+}
+
+.day-badge {
+    background: #000;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 8px 20px;
+    font-family: 'Orbitron', sans-serif;
+    border-radius: 20px;
+    display: inline-block;
+    box-shadow: 0 0 15px rgba(244, 196, 48, 0.2);
+}
+
+.timeline-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.timeline-item:nth-child(even) { flex-direction: row-reverse; }
+
+.time-box {
+    width: 45%;
+    text-align: right;
+    padding-right: 30px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    color: #fff;
+}
+.timeline-item:nth-child(even) .time-box { text-align: left; padding-right: 0; padding-left: 30px; }
+
+.dot {
+    width: 14px;
+    height: 14px;
+    background: #000;
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    box-shadow: 0 0 10px var(--primary);
+}
+
+.card-box {
+    width: 45%;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    padding: 20px;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+.timeline-item:nth-child(even) .card-box { text-align: right; }
+
+.card-box:hover {
+    transform: scale(1.02);
+    border-color: rgba(255,255,255,0.3);
+    background: rgba(30,30,30,0.8);
+}
+
+.event-title { color: #fff; font-family: 'Orbitron', sans-serif; margin-bottom: 5px; font-size: 1.1rem; }
+.event-artist { color: var(--primary); font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; }
+.event-loc { color: #888; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
+.timeline-item:nth-child(even) .event-loc { justify-content: flex-end; }
+
+/* LIVE BADGE */
+.live-marker {
+    position: absolute;
+    top: -10px; right: -10px;
+    background: var(--accent);
+    color: #000;
+    font-weight: 800;
+    font-size: 0.65rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: 'Orbitron';
+    animation: pulse 1.5s infinite;
+    display: none;
+}
+.timeline-item.live .live-marker { display: block; }
+.timeline-item.live .card-box { border-color: var(--accent); box-shadow: 0 0 20px rgba(29, 185, 84, 0.2); }
+
+@keyframes pulse { 0% {opacity:1;} 50% {opacity:0.7;} 100% {opacity:1;} }
+
+
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .page-title { font-size: 2.5rem; }
+    .timeline-line { left: 20px; }
+    .timeline-item { flex-direction: column; align-items: flex-start; margin-left: 20px; padding-left: 20px; border-left: 2px solid rgba(255,255,255,0.05); }
+    .timeline-item:nth-child(even) { flex-direction: column; align-items: flex-start; }
+    
+    .dot { left: 20px; transform: translateX(-50%); }
+    .time-box { width: 100%; text-align: left; padding: 0 0 5px 20px; font-size: 1rem; color: var(--primary); }
+    .timeline-item:nth-child(even) .time-box { text-align: left; padding: 0 0 5px 20px; }
+    
+    .card-box { width: 100%; margin-left: 20px; text-align: left !important; }
+    .timeline-item:nth-child(even) .event-loc { justify-content: flex-start; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="loader" id="loader">
+    <img src="../logo.png" class="loader-logo">
+    <div class="loader-text">
+        <h1>SCHEDULE</h1>
+        <p>LOADING EVENTS...</p>
+    </div>
+</div>
+
+<div class="bg-fixed"></div>
+
+<nav class="glass-nav" id="nav">
+    <div class="nav-left nav-menu">
+        <a href="../index.html">Home</a>
+        <a href="#" class="active">Schedule</a>
+    </div>
+
+    <div class="nav-center" id="navToggle">
+        <div class="logo-circle">
+            <img src="../logo.png">
+        </div>
+    </div>
+
+    <div class="nav-right nav-menu">
+        <a href="../index.html">Lineup</a>
+        <a href="../index.html">Contacts</a>
+    </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="../index.html">Home</a>
+    <a href="#">Schedule</a>
+    <a href="../index.html">Lineup</a>
+</div>
+
+<div class="page-header">
+    <h1 class="page-title">Event Schedule</h1>
+    <p class="page-subtitle">Sleep is overrated. The experience of a lifetime is not.</p>
+    
+    <div class="filter-container">
+        <button class="filter-btn active" data-filter="all">All Events</button>
+        <button class="filter-btn" data-filter="day1">Day 1 (Feb 20)</button>
+        <button class="filter-btn" data-filter="day2">Day 2 (Feb 21)</button>
+        <button class="filter-btn" data-filter="day3">Day 3 (Feb 22)</button>
+        <button class="filter-btn" data-filter="online">Online</button>
+    </div>
+</div>
+
+<div class="timeline-container" id="timelineList">
+    <div class="timeline-line"></div>
+    </div>
+
+<footer class="site-footer">
+    <div class="footer-text">
+        Made by <a href="https://tanmay1902.github.io" target="_blank">Tanmay Pandey</a> with <span class="heart">❤</span>
+    </div>
+</footer>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* --- DATA: ACCURATE SCHEDULE --- */
+    const events = [
+        // DAY 1 - Friday, Feb 20
+        { id: 1, day: "day1", dateLabel: "DAY 1 • FEB 20", time: "06:00 PM", title: "Bollywood Quiz", artist: "Host: Dr. Pritam Mondal", loc: "LH3" },
+        { id: 2, day: "day1", dateLabel: "DAY 1 • FEB 20", time: "06:30 PM", title: "Cultural Couture", artist: "Fashion Showcase", loc: "LHC Foyer" },
+        { id: 3, day: "day1", dateLabel: "DAY 1 • FEB 20", time: "08:00 PM", title: "Opening Ceremony", artist: "Inauguration", loc: "LHC Foyer" },
+        { id: 4, day: "day1", dateLabel: "DAY 1 • FEB 20", time: "08:30 PM", title: "Open Mic", artist: "Faculty x Student", loc: "LHC Foyer" },
+        { id: 5, day: "day1", dateLabel: "DAY 1 • FEB 20", time: "10:00 PM", title: "Jamming x Mushiyara", artist: "Musical Night", loc: "LHC Foyer" },
+
+        // DAY 2 - Saturday, Feb 21
+        { id: 6, day: "day2", dateLabel: "DAY 2 • FEB 21", time: "09:00 AM", title: "Solo/Group Dance", artist: "By Itehad", loc: "LH7" },
+        { id: 7, day: "day2", dateLabel: "DAY 2 • FEB 21", time: "09:00 AM", title: "Clay Modelling", artist: "By Rang", loc: "LH7" },
+        { id: 8, day: "day2", dateLabel: "DAY 2 • FEB 21", time: "09:00 AM", title: "General Quiz", artist: "By IMQC", loc: "LH6" },
+        { id: 9, day: "day2", dateLabel: "DAY 2 • FEB 21", time: "09:00 AM", title: "Poetry Writing", artist: "By LDS", loc: "LH4" },
+        { id: 10, day: "day2", dateLabel: "DAY 2 • FEB 21", time: "02:00 PM", title: "Mortal Kombat 11", artist: "Gaming Tourney", loc: "LHC Foyer" },
+        { id: 11, day: "day2", dateLabel: "DAY 2 • FEB 21", time: "All Day", title: "Football Tourney", artist: "Gaming Club", loc: "LHC Foyer" },
+        { id: 12, day: "day2", dateLabel: "DAY 2 • FEB 21", time: "06:00 PM", title: "Live Concert", artist: "ISHAN KRISHNAN", loc: "Main Stage, Fest Ground" },
+        { id: 13, day: "day2", dateLabel: "DAY 2 • FEB 21", time: "08:00 PM", title: "Masquerade Ball", artist: "Suits & Gowns", loc: "LHC Foyer" },
+        { id: 14, day: "day2", dateLabel: "DAY 2 • FEB 21", time: "11:00 PM", title: "Movie Screening", artist: "Open Air", loc: "New BB Court" },
+
+        // DAY 3 - Sunday, Feb 22
+        { id: 15, day: "day3", dateLabel: "DAY 3 • FEB 22", time: "09:00 AM", title: "Battle of Bands", artist: "By Aria", loc: "Fest Ground Main Stage" },
+        { id: 16, day: "day3", dateLabel: "DAY 3 • FEB 22", time: "09:00 AM", title: "Monodrama/Play", artist: "By DarpaN", loc: "LH7" },
+        { id: 17, day: "day3", dateLabel: "DAY 3 • FEB 22", time: "09:00 AM", title: "Live Sketching", artist: "By Rang", loc: "Campus Area" },
+        { id: 18, day: "day3", dateLabel: "DAY 3 • FEB 22", time: "09:00 AM", title: "Debate", artist: "By LDS", loc: "LH3" },
+        { id: 19, day: "day3", dateLabel: "DAY 3 • FEB 22", time: "11:00 AM", title: "Solo/Fashion Walk", artist: "By Adaa", loc: "Behind Admin Block" },
+        { id: 20, day: "day3", dateLabel: "DAY 3 • FEB 22", time: "02:00 PM", title: "Solo Singing", artist: "By Aria", loc: "LH5" },
+        { id: 21, day: "day3", dateLabel: "DAY 3 • FEB 22", time: "02:00 PM", title: "FIFA25 Tourney", artist: "Gaming Club", loc: "LHC Foyer" },
+        { id: 22, day: "day3", dateLabel: "DAY 3 • FEB 22", time: "02:00 PM", title: "Chess Tourney", artist: "Desperado Club", loc: "LH1" },
+        { id: 23, day: "day3", dateLabel: "DAY 3 • FEB 22", time: "06:00 PM", title: "HEADLINER", artist: "SWASTIK BAND", loc: "Main Stage, Fest Ground" },
+        { id: 24, day: "day3", dateLabel: "DAY 3 • FEB 22", time: "08:00 PM", title: "STAR PERFORMANCE", artist: "AKSHITA MENGI", loc: "Main Stage, Fest Ground" },
+
+        // ONLINE
+        { id: 25, day: "online", dateLabel: "ONLINE • FEB 21-22", time: "All Day", title: "Lumiere", artist: "Photo Story & Themed Photography", loc: "Online Submission" }
+    ];
+
+    const container = document.getElementById("timelineList");
+    const filters = document.querySelectorAll(".filter-btn");
+
+    /* --- RENDER FUNCTION --- */
+    function renderEvents(filterKey) {
+        // Clear list but keep line structure
+        container.innerHTML = '<div class="timeline-line"></div>';
+
+        let currentDayLabel = "";
+        let count = 0;
+
+        events.forEach(ev => {
+            if(filterKey !== "all" && ev.day !== filterKey) return;
+            count++;
+
+            // Day Header logic
+            if(ev.dateLabel !== currentDayLabel) {
+                currentDayLabel = ev.dateLabel;
+                const sep = document.createElement("div");
+                sep.className = "day-separator";
+                sep.innerHTML = `<span class="day-badge">${ev.dateLabel}</span>`;
+                container.appendChild(sep);
+            }
+
+            // Timeline Item
+            const item = document.createElement("div");
+            item.className = "timeline-item";
+            item.innerHTML = `
+                <div class="time-box">${ev.time}</div>
+                <div class="dot"></div>
+                <div class="card-box">
+                    <div class="live-marker">LIVE</div>
+                    <h3 class="event-title">${ev.title}</h3>
+                    <div class="event-artist">${ev.artist}</div>
+                    <div class="event-loc">📍 ${ev.loc}</div>
+                </div>
+            `;
+            container.appendChild(item);
+
+            // GSAP Animation
+            gsap.fromTo(item, 
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.5, delay: count * 0.1, scrollTrigger: { trigger: item, start: "top 95%" } }
+            );
+        });
+
+        if(count === 0) {
+            container.innerHTML += `<div style="text-align:center; color:#666; padding:40px;">No events found for this category.</div>`;
+        }
+    }
+
+    /* --- FILTER LOGIC --- */
+    filters.forEach(btn => {
+        btn.addEventListener("click", () => {
+            filters.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            renderEvents(btn.getAttribute("data-filter"));
+        });
+    });
+
+    /* --- INIT --- */
+    renderEvents("all");
+
+    // Loader
+    window.addEventListener("load", () => {
+        setTimeout(() => document.getElementById("loader").classList.add("hide"), 500);
+    });
+
+    // Mobile Nav
+    const navToggle = document.getElementById("navToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+    let menuOpen = false;
+
+    navToggle.addEventListener("click", () => {
+        if(menuOpen) {
+            gsap.to(mobileMenu,{opacity:0, scale:.9, duration:.3, onComplete:()=>mobileMenu.classList.remove("open")});
+            menuOpen = false;
+        } else {
+            mobileMenu.classList.add("open");
+            gsap.fromTo(mobileMenu, {opacity:0, scale:.9}, {opacity:1, scale:1, duration:.4});
+            menuOpen = true;
+        }
+    });
+});
+</script>
+
+</body>
+</html>

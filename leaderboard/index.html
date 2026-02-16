@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hall of Fame | Insomnia 2026</title>
+
+<link rel="stylesheet" href="../main.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Henny+Penny&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<style>
+/* =========================================
+   PAGE SPECIFIC STYLES
+   ========================================= */
+:root {
+    --primary: #F4C430;
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    overflow-y: auto !important;
+    background: #050505;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Background Override */
+.bg-fixed {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.85), #000), url('../img3.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* --- PAGE HEADER --- */
+.page-header {
+    padding-top: 140px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.page-title {
+    font-family: 'Henny Penny', cursive;
+    font-size: 4rem;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--primary);
+    text-shadow: 0 0 20px rgba(244, 196, 48, 0.3);
+    margin-bottom: 10px;
+}
+
+.page-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    color: #888;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+}
+
+/* --- LEADERBOARD TABLE --- */
+.leaderboard-section {
+    padding: 40px 20px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.leaderboard-container {
+    width: 100%;
+    max-width: 1000px;
+    position: relative;
+    z-index: 2;
+}
+
+.leaderboard-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+
+/* HEADER ROW */
+.lb-header {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 2fr 0.5fr;
+    padding: 15px 20px;
+    color: var(--primary);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+/* DATA ROWS */
+.lb-row {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 2fr 0.5fr;
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+    opacity: 0; /* Animated in */
+}
+
+.lb-row:hover {
+    background: rgba(244, 196, 48, 0.15);
+    border-color: var(--primary);
+    transform: translateX(10px) scale(1.01);
+}
+
+.lb-row .rank {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.lb-row .event-name { font-weight: 700; font-size: 1rem; }
+.lb-row .winner { color: #ccc; }
+.lb-row .year { text-align: right; font-family: 'Orbitron', sans-serif; color: #888; }
+
+/* HOVER PREVIEW IMAGE */
+.lb-bg-preview {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    filter: brightness(0.3) blur(2px);
+    pointer-events: none;
+}
+
+.lb-bg-preview.active { opacity: 1; }
+
+/* LOADING STATE */
+.loading-msg {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-family: 'Orbitron', sans-serif;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* FOOTER STYLES (Reused) */
+.site-footer {
+    text-align: center;
+    padding: 30px 20px;
+    background: rgba(10, 10, 10, 0.9);
+    border-top: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    margin-top: auto;
+    z-index: 10;
+}
+
+.footer-text { font-family: 'Montserrat', sans-serif; color: #666; font-size: 0.9rem; }
+.footer-text a { color: var(--primary); text-decoration: none; font-weight: 600; }
+.heart { color: #e74c3c; display: inline-block; animation: beat 1s infinite alternate; }
+@keyframes beat { to { transform: scale(1.1); } }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .page-title { font-size: 2.5rem; }
+    .lb-header, .lb-row { grid-template-columns: 0.5fr 2fr 1fr; gap: 10px; }
+    .lb-header span:nth-child(4), .lb-row .year { display: none; } /* Hide Year on mobile */
+    .lb-row .winner { font-size: 0.85rem; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="loader" id="loader">
+    <img src="../logo.png" class="loader-logo">
+    <div class="loader-text">
+        <h1>LEGENDS</h1>
+        <p>FETCHING DATA...</p>
+    </div>
+</div>
+
+<div class="bg-fixed"></div>
+
+<div class="lb-bg-preview" id="lbPreview"></div>
+
+<nav class="glass-nav" id="nav">
+    <div class="nav-left nav-menu">
+        <a href="../index.html">Home</a>
+        <a href="../events/index.html">Schedule</a>
+    </div>
+
+    <div class="nav-center" id="navToggle">
+        <div class="logo-circle">
+            <img src="../logo.png">
+        </div>
+    </div>
+
+    <div class="nav-right nav-menu">
+        <a href="#" class="active">Leaderboard</a>
+        <a href="../index.html#contact">Contacts</a>
+    </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="../index.html">Home</a>
+    <a href="../events/index.html">Schedule</a>
+    <a href="#">Leaderboard</a>
+</div>
+
+<div class="page-header">
+    <h1 class="page-title">Hall of Fame</h1>
+    <p class="page-subtitle">WINNERS OF INSOMNIA</p>
+</div>
+
+<section class="leaderboard-section">
+    <div class="leaderboard-container">
+        <div class="leaderboard-grid">
+            <div class="lb-header">
+                <span>RANK</span>
+                <span>EVENT</span>
+                <span>CHAMPION</span>
+                <span>YEAR</span>
+            </div>
+
+            <div id="leaderboard-rows">
+                <div class="loading-msg">CONNECTING TO DATABASE...</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="footer-text">
+        Made by <a href="https://tanmay1902.github.io" target="_blank">Tanmay Pandey</a> with <span class="heart">❤</span>
+    </div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // --- 1. GOOGLE SHEET URL (CSV FORMAT) ---
+    // Replace this with your actual published CSV link
+    // Example: https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv
+    const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR_YOUR_LONG_ID_HERE/pub?output=csv';
+
+    // --- 2. FALLBACK DATA (If fetch fails or no URL provided) ---
+    const fallbackData = [
+        { Rank: "#1", Event: "Battle of Bands", Champion: "TBD", Year: "2026", Image: "../events/45.png" },
+        { Rank: "#1", Event: "Stage Play", Champion: "TBD", Year: "2026", Image: "../events/33.png" },
+        { Rank: "#1", Event: "Group Dance", Champion: "TBD", Year: "2026", Image: "../events/12.png" },
+        { Rank: "#1", Event: "Fashion Show", Champion: "TBD", Year: "2026", Image: "../events/24.png" },
+        { Rank: "#1", Event: "Solo Singing", Champion: "TBD", Year: "2026", Image: "../events/bob.png" }
+    ];
+
+    const rowContainer = document.getElementById('leaderboard-rows');
+    const preview = document.getElementById('lbPreview');
+
+    // --- 3. FETCH & RENDER ---
+    function initLeaderboard() {
+        if(sheetURL.includes("YOUR_LONG_ID_HERE")) {
+            console.warn("No Google Sheet connected. Using fallback data.");
+            renderRows(fallbackData);
+            hideLoader();
+            return;
+        }
+
+        Papa.parse(sheetURL, {
+            download: true,
+            header: true, // Uses first row as keys (Rank, Event, Champion, Year, Image)
+            complete: function(results) {
+                renderRows(results.data);
+                hideLoader();
+            },
+            error: function(err) {
+                console.error("Sheet Error:", err);
+                renderRows(fallbackData); // Use fallback on error
+                hideLoader();
+            }
+        });
+    }
+
+    // --- 4. RENDER LOGIC ---
+    function renderRows(data) {
+        rowContainer.innerHTML = ''; // Clear loading text
+
+        data.forEach((row, index) => {
+            // Skip empty rows
+            if(!row.Event || !row.Champion) return;
+
+            const div = document.createElement('div');
+            div.className = 'lb-row';
+            div.innerHTML = `
+                <span class="rank">${row.Rank || '#1'}</span>
+                <span class="event-name">${row.Event}</span>
+                <span class="winner">${row.Champion}</span>
+                <span class="year">${row.Year}</span>
+            `;
+
+            // Hover Effect
+            if(row.Image) {
+                div.addEventListener('mouseenter', () => {
+                    preview.style.backgroundImage = `url('${row.Image}')`;
+                    preview.classList.add('active');
+                });
+                div.addEventListener('mouseleave', () => {
+                    preview.classList.remove('active');
+                });
+            }
+
+            rowContainer.appendChild(div);
+
+            // Animate Entry
+            gsap.to(div, { opacity: 1, duration: 0.5, delay: index * 0.1 });
+        });
+    }
+
+    function hideLoader() {
+        setTimeout(() => document.getElementById("loader").classList.add("hide"), 500);
+    }
+
+    // Run
+    initLeaderboard();
+
+    // --- 5. MOBILE NAV LOGIC (Reused) ---
+    const navToggle = document.getElementById("navToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+    let menuOpen = false;
+
+    navToggle.addEventListener("click", () => {
+        if(menuOpen) {
+            gsap.to(mobileMenu,{opacity:0, scale:.9, duration:.3, onComplete:()=>mobileMenu.classList.remove("open")});
+            menuOpen = false;
+        } else {
+            mobileMenu.classList.add("open");
+            gsap.fromTo(mobileMenu, {opacity:0, scale:.9}, {opacity:1, scale:1, duration:.4});
+            menuOpen = true;
+        }
+    });
+
+});
+</script>
+
+</body>
+</html>

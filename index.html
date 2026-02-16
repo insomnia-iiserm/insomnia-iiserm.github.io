@@ -9,131 +9,27 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Henny+Penny&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 
 <style>
 /* =========================================
    SPOTIFY PLAYER STYLES
    ========================================= */
-
-.spotify-player {
-    display: none; /* Hidden by default */
-    align-items: center;
-    gap: 12px;
-    background: rgba(20, 20, 20, 0.85); /* Dark Spotify-ish background */
-    padding: 10px 16px;
-    border-radius: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-    width: fit-content;
-    margin-top: 15px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s ease;
-}
-
-.spotify-player:hover {
-    transform: scale(1.02);
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Album Art (Small Circle) */
-.spotify-art {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    overflow: hidden;
-    background: #333;
-    border: 2px solid #121212;
-    flex-shrink: 0;
-}
-
-.spotify-art img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Track Info + Progress Bar */
-.spotify-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 120px;
-    margin-right: 8px;
-}
-
-.track-name {
-    color: #fff;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 4px;
-}
-
-.artist-label {
-    color: #b3b3b3;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-}
-
-/* Progress Bar Container */
-.progress-bg {
-    width: 100%;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
-    margin-top: 4px;
-    overflow: hidden;
-    position: relative;
-}
-
-/* The actual moving bar */
-.progress-fill {
-    width: 0%;
-    height: 100%;
-    background-color: #1DB954; /* Spotify Green */
-    border-radius: 3px;
-    transition: width 0.1s linear;
-}
-
-/* Play Button (Green Circle) */
-.spotify-play-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #1DB954; /* Spotify Green */
-    border: none;
-    color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-}
-
-.spotify-play-btn:hover {
-    transform: scale(1.1);
-    background: #1ed760; /* Lighter Green */
-}
-
-.spotify-play-btn span {
-    display: block;
-    margin-left: 2px; /* Visual centering for triangle */
-}
-
-/* When paused (icon switch) */
-.spotify-play-btn.playing span {
-    margin-left: 0;
-    font-weight: 900;
-    font-size: 14px;
-}
+.spotify-player { display: none; align-items: center; gap: 12px; background: rgba(20, 20, 20, 0.85); padding: 10px 16px; border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); width: fit-content; margin-top: 15px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); transition: transform 0.3s ease; }
+.spotify-player:hover { transform: scale(1.02); border-color: rgba(255, 255, 255, 0.2); }
+.spotify-art { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; background: #333; border: 2px solid #121212; flex-shrink: 0; }
+.spotify-art img { width: 100%; height: 100%; object-fit: cover; }
+.spotify-info { display: flex; flex-direction: column; justify-content: center; min-width: 120px; margin-right: 8px; }
+.track-name { color: #fff; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; line-height: 1.2; margin-bottom: 4px; }
+.artist-label { color: #b3b3b3; font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 0.5px; }
+.progress-bg { width: 100%; height: 3px; background: rgba(255, 255, 255, 0.2); border-radius: 3px; margin-top: 4px; overflow: hidden; position: relative; }
+.progress-fill { width: 0%; height: 100%; background-color: #1DB954; border-radius: 3px; transition: width 0.1s linear; }
+.spotify-play-btn { width: 40px; height: 40px; border-radius: 50%; background: #1DB954; border: none; color: black; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: all 0.2s ease; flex-shrink: 0; }
+.spotify-play-btn:hover { transform: scale(1.1); background: #1ed760; }
+.spotify-play-btn span { display: block; margin-left: 2px; }
+.spotify-play-btn.playing span { margin-left: 0; font-weight: 900; font-size: 14px; }
 </style>
-
 </head>
 
 <body>
@@ -150,8 +46,8 @@
 
 <nav class="glass-nav" id="nav">
     <div class="nav-left nav-menu">
-        <a href="https://insomnia-iiserm.github.io/">Home</a>
-        <a href="/events">Events</a>
+        <a href="index.html" class="active">Home</a>
+        <a href="events/index.html">Schedule</a>
     </div>
 
     <div class="nav-center" id="navToggle">
@@ -161,122 +57,277 @@
     </div>
 
     <div class="nav-right nav-menu">
-        <a href="/leaderboard">Leaderboard</a>
-        <a href="https://insomnia-iiserm.github.io/#contact">Contacts</a>
+        <a href="#lineup">Lineup</a>
+        <a href="leaderboard/index.html">Hall of Fame</a>
     </div>
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-    <a>Home</a>
-    <a>Events</a>
-    <a>Leaderboard</a>
-    <a>Contacts</a>
+    <a href="index.html">Home</a>
+    <a href="events/index.html">Schedule</a>
+    <a href="#lineup">Lineup</a>
 </div>
 
 
-<section class="hero">
-
-    <div class="hero-bg">
-        <img src="img3.jpg">
-    </div>
-
+<section class="hero" id="lineup">
+    <div class="hero-bg"><img src="img3.jpg"></div>
     <div class="hero-marquee">
         <div class="marquee-track">
             INSOMNIA 2026 • INSOMNIA 2026 • INSOMNIA 2026 • INSOMNIA 2026 •
             INSOMNIA 2026 • INSOMNIA 2026 • INSOMNIA 2026 • INSOMNIA 2026 •
         </div>
     </div>
-
     <div class="spotlight" id="spotlight"></div>
-
-    <div class="artist masked">
-        <img id="artistImg">
-    </div>
-
+    <div class="artist masked"><img id="artistImg"></div>
+    
     <div class="artist-info">
         <h2 id="artistName"></h2>
         <p id="eventDate"></p>
-
+        
         <div class="spotify-player" id="swastikPlayer">
-            
-            <div class="spotify-art">
-                <img src="swastik.png" alt="Album Art">
-            </div>
-
+            <div class="spotify-art"><img src="swastik.png" alt="Album Art"></div>
             <div class="spotify-info">
                 <div class="track-name">Jogi</div>
                 <div class="artist-label">Swastik The Band</div>
-                <div class="progress-bg">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
+                <div class="progress-bg"><div class="progress-fill" id="progressFill"></div></div>
             </div>
-
-            <button class="spotify-play-btn" id="playBtn">
-                <span>▶</span>
-            </button>
-
+            <button class="spotify-play-btn" id="playBtn"><span>▶</span></button>
         </div>
-
     </div>
 
     <div class="lineup-counter" id="lineupCounter">0 / 3</div>
-
     <button class="reveal-btn" id="revealBtn">REVEAL LINEUP</button>
-
-    <div class="stage-lights">
-        <div></div><div></div><div></div>
-    </div>
-
+    <div class="stage-lights"><div></div><div></div><div></div></div>
 </section>
 
-<section class="lineup-section">
+<section class="lineup-section" id="full-lineup">
+    <div class="lineup-header">
+        <h2 class="section-title">THE LINEUP</h2>
+        <div class="glitch-line"></div>
+    </div>
 
-    <h2 class="section-title">FULL LINEUP</h2>
-
-    <div class="lineup-grid">
+    <div class="cyber-grid">
         
-        <div class="lineup-main">
-            <img src="swastik.png"> <div class="lineup-info">
+        <div class="cyber-card headliner">
+            <div class="cyber-img">
+                <img src="swastik.png" alt="Swastik The Band">
+                <div class="cyber-overlay"></div>
+            </div>
+            <div class="cyber-content">
+                <div class="cyber-tag">HEADLINER</div>
                 <h3>SWASTIK BAND</h3>
-                <div class="location-pill">22 Feb • 6–7 PM • FEST GROUND</div>
+                <div class="cyber-details">
+                    <span><i class="icon">📅</i> 22 FEB</span>
+                    <span><i class="icon">📍</i> FEST GROUND</span>
+                    <span><i class="icon">⌚</i> 6:00 PM</span>
+                </div>
+            </div>
+            <div class="card-border"></div>
+        </div>
+
+        <div class="cyber-card">
+            <div class="cyber-img">
+                <img src="Ishan.png" alt="Ishan Krishan">
+                <div class="cyber-overlay"></div>
+            </div>
+            <div class="cyber-content">
+                <div class="cyber-tag" style="border-color: #1DB954; color:#1DB954;">FEATURING</div>
+                <h3>ISHAN KRISHAN</h3>
+                <div class="cyber-details">
+                    <span>21 FEB • 7 PM • FEST GROUND</span>
+                </div>
+            </div>
+            <div class="card-border"></div>
+        </div>
+
+        <div class="cyber-card">
+            <div class="cyber-img">
+                <img src="Akshita.png" alt="Akshita Mengi">
+                <div class="cyber-overlay"></div>
+            </div>
+            <div class="cyber-content">
+                <div class="cyber-tag" style="border-color: #1DB954; color:#1DB954;">FEATURING</div>
+                <h3>AKSHITA MENGI</h3>
+                <div class="cyber-details">
+                    <span>22 FEB • 9:30 PM • FEST GROUND</span>
+                </div>
+            </div>
+            <div class="card-border"></div>
+        </div>
+
+    </div>
+</section>
+
+<section class="access-section" id="register">
+    <div class="access-container">
+        <div class="access-left">
+            <h2 class="section-title" style="text-align: left;">GENERATE PASS</h2>
+            <p class="access-text">CREATE YOUR DIGITAL SOUVENIR.</p>
+            
+            <div class="cyber-form">
+                <div class="input-group">
+                    <input type="text" id="inputName" maxlength="18" placeholder=" " autocomplete="off">
+                    <label>NAME</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="inputRoll" maxlength="8" placeholder=" " autocomplete="off">
+                    <label>ROLL NUMBER</label>
+                </div>
+                <div class="disclaimer-box">
+                    <strong>⚠️ IMPORTANT:</strong>
+                    <p>This is a <span>digital souvenir only</span>. It does NOT grant entry.</p>
+                </div>
+                <button id="downloadBtn" class="cyber-btn">DOWNLOAD PASS ⬇</button>
             </div>
         </div>
 
-        <div class="lineup-side">
-            
-            <div class="artist-card">
-                <img src="Ishan.png"> <h4>ISHAN KRISHAN</h4>
-                <div class="location-pill">21 Feb • 7–9 PM • FEST GROUND</div>
+        <div class="access-right">
+            <div class="holo-card" id="ticketCard">
+                <div class="watermark">SOUVENIR</div>
+                <div class="holo-content">
+                    <div class="card-header">
+                        <img src="logo.png" class="card-logo">
+                        <span class="card-tag">IISER MOHALI</span>
+                    </div>
+                    <div class="card-body">
+                        <h3>INSOMNIA</h3>
+                        <h1>2026</h1>
+                        <div class="barcode">|| ||| || ||||| ||</div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="footer-col">
+                            <span class="label">AGENT</span>
+                            <span class="value" id="cardName">YOUR NAME</span>
+                        </div>
+                        <div class="footer-col" style="text-align: right;">
+                            <span class="label">ID / ROLL</span>
+                            <span class="value" id="cardRoll">MS21000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="holo-glare"></div>
             </div>
-
-            <div class="artist-card">
-                <img src="Akshita.png"> <h4>AKSHITA MENGI</h4>
-                <div class="location-pill">22 Feb • 9:30–10 PM • FEST GROUND</div>
-            </div>
-            
         </div>
     </div>
-
 </section>
+
+<section class="star-events-section">
+    <h2 class="section-title">EVENTS</h2>
+    <div class="star-grid">
+        <div class="star-card">
+            <div class="star-img">
+                <img src="events/bob.png" alt="Battle of Bands"> <div class="star-overlay"></div>
+            </div>
+            <div class="star-content">
+                <div class="club-tag">BY ARIA</div>
+                <h3>BATTLE OF BANDS</h3>
+                <p>The ultimate clash of chords and vocals.</p>
+                <a href="events/index.html" class="star-btn">More Events →</a>
+            </div>
+        </div>
+        <div class="star-card">
+            <div class="star-img">
+                <img src="events/stage.jpg" alt="Stage Play"> <div class="star-overlay"></div>
+            </div>
+            <div class="star-content">
+                <div class="club-tag">BY DARPAN</div>
+                <h3>STAGE PLAY</h3>
+                <p>Emotions, expressions, and the spotlight.</p>
+                <a href="events/index.html" class="star-btn">More Events →</a>
+            </div>
+        </div>
+        <div class="star-card">
+            <div class="star-img">
+                <img src="events/dance.JPG" alt="Group Dance"> <div class="star-overlay"></div>
+            </div>
+            <div class="star-content">
+                <div class="club-tag">BY ITEHAD</div>
+                <h3>GROUP DANCE</h3>
+                <p>Sync, rhythm, and electric energy.</p>
+                <a href="events/index.html" class="star-btn">More Events →</a>
+            </div>
+        </div>
+    </div>
+    <div class="center-btn-container">
+        <a href="events/index.html" class="view-all-btn">EXPLORE ALL EVENTS</a>
+    </div>
+</section>
+
+<section class="dual-section">
+    <div class="dual-col gallery-col">
+        <h3 class="dual-title">HIGHLIGHTS</h3>
+        <div class="accordion-slider">
+            <div class="slide" style="background-image: url('events/6.png')"><div class="slide-content"><h2>VIBE</h2></div></div>
+            <div class="slide active" style="background-image: url('events/24.png')"><div class="slide-content"><h2>HYPE</h2></div></div>
+            <div class="slide" style="background-image: url('events/38.png')"><div class="slide-content"><h2>SOUL</h2></div></div>
+            <div class="slide" style="background-image: url('events/51.png')"><div class="slide-content"><h2>CROWD</h2></div></div>
+        </div>
+    </div>
+    <div class="dual-col video-col">
+        <h3 class="dual-title">THE MOVIE</h3>
+        <div class="video-frame">
+            <div class="video-glow"></div>
+            <video src="insomnia.mp4" poster="events/10.png" loop muted autoplay playsinline></video>
+            <div class="video-overlay">
+                <div class="play-btn-circle"><span>▶</span></div>
+                <h3>INSOMNIA 2026</h3>
+                <p>OFFICIAL TRAILER</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="gallery-section">
+    <div class="gallery-header">
+        <h2 class="section-title">EVENTS POSTERS</h2>
+    </div>
+    <div class="drag-hint" id="dragHint">
+        <div class="hand-icon"><svg viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/></svg></div>
+        <span>DRAG TO EXPLORE</span>
+    </div>
+    <div class="drag-container" id="dragContainer">
+        <div class="drag-track" id="dragTrack"></div>
+    </div>
+    <div class="drag-progress-container">
+        <div class="drag-progress-bar" id="dragProgressBar"></div>
+    </div>
+</section>
+
+
 
 <section class="sponsor-section">
     <h2 class="section-title">SPONSORS</h2>
     <div class="sponsor-slider">
         <div class="sponsor-track">
-            <img src="sponsor1.png"><img src="sponsor2.png"><img src="sponsor3.png">
-            <img src="sponsor4.png"><img src="sponsor5.png">
-            <img src="sponsor1.png"><img src="sponsor2.png"><img src="sponsor3.png">
-            <img src="sponsor4.png"><img src="sponsor5.png">
+            <img src="sponsor/latestlogo-HRluxe(red) (1).png">
+            <img src="sponsor/BRIDAL 68-1.png">
+            <img src="sponsor/HR 68 BEAUTY.png">
+            <img src="sponsor/HR68 makeup course.png">
+            <img src="sponsor/HR68 MEN.png">
+            <img src="sponsor/HR68-HAIR.png">
+            <img src="sponsor/HR68-NAILS.png">
+            <img src="sponsor/latestlogo-HRluxe(red) (1).png">
+            <img src="sponsor/BRIDAL 68-1.png">
+            <img src="sponsor/HR 68 BEAUTY.png">
+            <img src="sponsor/HR68 makeup course.png">
+            <img src="sponsor/HR68 MEN.png">
+            <img src="sponsor/HR68-HAIR.png">
+            <img src="sponsor/HR68-NAILS.png">
         </div>
     </div>
 </section>
 
+<footer class="site-footer">
+    <div class="footer-text">
+        Made by <a href="https://tanmay1902.github.io" target="_blank">Tanmay Pandey</a> with <span class="heart">❤</span>
+    </div>
+</footer>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* =====================================================
-       DOM ELEMENTS
-       ===================================================== */
+    // --- DOM Elements ---
     const loader = document.getElementById("loader");
     const artistBox = document.querySelector(".artist");
     const imgEl = document.getElementById("artistImg");
@@ -284,25 +335,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const dateEl = document.getElementById("eventDate");
     const revealBtn = document.getElementById("revealBtn");
     const counterEl = document.getElementById("lineupCounter");
-    
-    // Player Elements
     const playerContainer = document.getElementById("swastikPlayer");
     const playBtn = document.getElementById("playBtn");
     const progressFill = document.getElementById("progressFill");
-
-    // Nav
     const navToggle = document.getElementById("navToggle");
     const mobileMenu = document.getElementById("mobileMenu");
 
-
-    /* =====================================================
-       AUDIO CONFIGURATION
-       ===================================================== */
+    // --- 1. AUDIO PLAYER LOGIC ---
     const swastikAudio = new Audio('swastik.mp3');
     swastikAudio.volume = 0.7;
     let isPlaying = false;
 
-    // --- PLAY BUTTON LOGIC ---
     playBtn.addEventListener("click", () => {
         if(isPlaying) {
             swastikAudio.pause();
@@ -310,13 +353,12 @@ document.addEventListener("DOMContentLoaded", () => {
             playBtn.classList.remove("playing");
         } else {
             swastikAudio.play();
-            playBtn.innerHTML = "<span>❚❚</span>"; // Pause Symbol
+            playBtn.innerHTML = "<span>❚❚</span>";
             playBtn.classList.add("playing");
         }
         isPlaying = !isPlaying;
     });
 
-    // --- PROGRESS BAR UPDATE ---
     swastikAudio.addEventListener("timeupdate", () => {
         if(swastikAudio.duration) {
             const percent = (swastikAudio.currentTime / swastikAudio.duration) * 100;
@@ -324,7 +366,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- RESET ON END ---
     swastikAudio.addEventListener("ended", () => {
         isPlaying = false;
         playBtn.innerHTML = "<span>▶</span>";
@@ -332,150 +373,225 @@ document.addEventListener("DOMContentLoaded", () => {
         progressFill.style.width = "0%";
     });
 
-
-    /* =====================================================
-       MOBILE NAV
-       ===================================================== */
+    // --- 2. MOBILE MENU ---
     let menuOpen = false;
+    navToggle.addEventListener("click", e => {
+        e.stopPropagation();
+        if(menuOpen) {
+            gsap.to(mobileMenu, {opacity:0, scale:.9, duration:.3, onComplete:()=>mobileMenu.classList.remove("open")});
+            menuOpen = false;
+        } else {
+            mobileMenu.classList.add("open");
+            gsap.fromTo(mobileMenu, {opacity:0, scale:.9}, {opacity:1, scale:1, duration:.4});
+            menuOpen = true;
+        }
+    });
+    
+    document.addEventListener("click", e => {
+        if(menuOpen && !mobileMenu.contains(e.target) && !navToggle.contains(e.target)){
+            gsap.to(mobileMenu, {opacity:0, scale:.9, duration:.3, onComplete:()=>mobileMenu.classList.remove("open")});
+            menuOpen = false;
+        }
+    });
 
-    function openMenu(){
-        if(!mobileMenu) return;
-        mobileMenu.classList.add("open");
-        gsap.fromTo(mobileMenu, {opacity:0, scale:.9}, {opacity:1, scale:1, duration:.45, ease:"power3.out"});
-        menuOpen = true;
-    }
-
-    function closeMenu(){
-        if(!mobileMenu) return;
-        gsap.to(mobileMenu,{opacity:0, scale:.9, duration:.35, ease:"power3.in", onComplete:()=> mobileMenu.classList.remove("open")});
-        menuOpen = false;
-    }
-
-    navToggle?.addEventListener("click", e=>{ e.stopPropagation(); menuOpen ? closeMenu() : openMenu(); });
-    document.addEventListener("click", e=>{ if(menuOpen && mobileMenu && !mobileMenu.contains(e.target) && !navToggle.contains(e.target)){ closeMenu(); }});
-
-
-    /* =====================================================
-       ARTIST DATA (UPDATED)
-       ===================================================== */
+    // --- 3. LINEUP REVEAL LOGIC ---
     const artists = [
         {name:"Swastik Band", image:"swastik.png", date:"22 Feb • 6–7 PM • FEST GROUND"},
         {name:"Ishan Krishan", image:"Ishan.png", date:"21 Feb • 7–9 PM • FEST GROUND"},
         {name:"Akshita Mengi", image:"Akshita.png", date:"22 Feb • 9:30–10 PM • FEST GROUND"}
     ];
-
     let index = -1;
     let locked = false;
 
-
-    /* =====================================================
-       PRELOADER
-       ===================================================== */
     async function preloadImages(){
-        const promises = artists.map(a=>{
-            return new Promise(resolve=>{
-                const img = new Image();
-                img.src = a.image;
-                img.onload = resolve;
-                img.onerror = resolve;
-            });
-        });
+        const promises = artists.map(a => new Promise(resolve => {
+            const img = new Image();
+            img.src = a.image;
+            img.onload = resolve;
+            img.onerror = resolve;
+        }));
         await Promise.all(promises);
     }
 
-    window.addEventListener("load", async ()=>{
+    window.addEventListener("load", async () => {
         await preloadImages();
-        setTimeout(()=> loader.classList.add("hide"), 700);
+        setTimeout(() => loader.classList.add("hide"), 700);
     });
 
-
-    /* =====================================================
-       UPDATE CONTENT
-       ===================================================== */
     function updateContent(i){
         const a = artists[i];
-        
         imgEl.src = a.image;
         nameEl.textContent = a.name;
         dateEl.textContent = a.date;
         counterEl.textContent = `${i+1} / ${artists.length}`;
 
-        // --- SHOW PLAYER ONLY FOR SWASTIK ---
         if(a.name === "Swastik Band") {
             playerContainer.style.display = "flex";
-            gsap.fromTo(playerContainer, {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: 0.5, delay: 0.2, ease: "back.out(1.7)"});
+            gsap.fromTo(playerContainer, {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: 0.5, delay: 0.2});
         } else {
             playerContainer.style.display = "none";
-            
-            // Stop Audio if moving to next artist
             if(isPlaying) {
                 swastikAudio.pause();
                 swastikAudio.currentTime = 0;
                 isPlaying = false;
                 playBtn.innerHTML = "<span>▶</span>";
                 playBtn.classList.remove("playing");
-                progressFill.style.width = "0%";
             }
         }
     }
 
-
-    /* =====================================================
-       REVEAL TRANSITION
-       ===================================================== */
     async function showArtist(i){
         if(locked) return;
         locked = true;
-
         const img = new Image();
         img.src = artists[i].image;
-        await new Promise(r=>{ if(img.complete) r(); else img.onload = r; });
-
+        await new Promise(r => img.onload = r);
         const tl = gsap.timeline({ defaults:{ease:"power3.inOut"}, onComplete:()=> locked=false });
-
         tl.to(imgEl,{opacity:0, scale:.95, duration:.35})
           .to(".artist-info",{opacity:0, y:20, duration:.35},"<")
-          .add(()=>{
-            updateContent(i);
-            artistBox.classList.remove("masked");
-          })
+          .add(()=>{ updateContent(i); artistBox.classList.remove("masked"); })
           .fromTo(imgEl, {opacity:0, scale:1.05}, {opacity:1, scale:1, duration:.6})
           .fromTo(".artist-info", {opacity:0, y:20}, {opacity:1, y:0, duration:.6}, "-=.4");
     }
 
-
-    /* =====================================================
-       NEXT BUTTON LOGIC
-       ===================================================== */
-    function nextArtist(){
+    revealBtn.addEventListener("click", () => {
         if(index === -1){
             index = 0;
             showArtist(index);
             revealBtn.textContent = "NEXT";
             return;
         }
-
         if(index === artists.length - 1){
             document.body.classList.add("lineup-complete");
             revealBtn.textContent = "SEE FULL LINEUP ↓";
-            if(isPlaying) { swastikAudio.pause(); isPlaying = false; } // Safety stop
+            if(isPlaying) { swastikAudio.pause(); isPlaying = false; }
             setTimeout(()=>{ window.scrollTo({ top: window.innerHeight, behavior: "smooth" }); }, 400);
             return;
         }
-
         index++;
         showArtist(index);
+    });
+
+    window.addEventListener("wheel", e=>{ if(!document.body.classList.contains("lineup-complete")) e.preventDefault(); },{passive:false});
+    window.addEventListener("touchmove", e=>{ if(!document.body.classList.contains("lineup-complete")) e.preventDefault(); },{passive:false});
+
+
+    // --- 4. DRAGGABLE SLIDER LOGIC ---
+    const track = document.getElementById('dragTrack');
+    const container = document.getElementById('dragContainer');
+    const progressBar = document.getElementById('dragProgressBar');
+    const dragHint = document.getElementById('dragHint');
+
+    // Populate Images
+    for(let i = 6; i <= 51; i++) {
+        const card = document.createElement('div');
+        card.className = 'gallery-card';
+        card.innerHTML = `<img src="events/${i}.png" loading="lazy" alt="Gallery ${i}">`;
+        track.appendChild(card);
     }
 
-    revealBtn?.addEventListener("click", nextArtist);
+    let isDown = false;
+    let startX;
+    let scrollLeft;
 
+    const hideHint = () => {
+        dragHint.classList.add('hidden');
+        container.removeEventListener('mousedown', hideHint);
+        container.removeEventListener('touchstart', hideHint);
+    };
 
-    /* =====================================================
-       SCROLL LOCK
-       ===================================================== */
-    window.addEventListener("wheel", e=>{ if(!document.body.classList.contains("lineup-complete")){ e.preventDefault(); }},{passive:false});
-    window.addEventListener("touchmove", e=>{ if(!document.body.classList.contains("lineup-complete")){ e.preventDefault(); }},{passive:false});
+    container.addEventListener('mousedown', (e) => {
+        hideHint();
+        isDown = true;
+        container.classList.add('active');
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+    });
 
+    container.addEventListener('mouseleave', () => { isDown = false; container.classList.remove('active'); });
+    container.addEventListener('mouseup', () => { isDown = false; container.classList.remove('active'); });
+    container.addEventListener('mousemove', (e) => {
+        if(!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const walk = (x - startX) * 2.5;
+        container.scrollLeft = scrollLeft - walk;
+        updateProgress();
+    });
+
+    container.addEventListener('touchstart', (e) => {
+        hideHint();
+        isDown = true;
+        startX = e.touches[0].pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+    });
+    container.addEventListener('touchend', () => isDown = false);
+    container.addEventListener('touchmove', (e) => {
+        if(!isDown) return;
+        const x = e.touches[0].pageX - container.offsetLeft;
+        const walk = (x - startX) * 2.5;
+        container.scrollLeft = scrollLeft - walk;
+        updateProgress();
+    });
+
+    function updateProgress() {
+        const max = container.scrollWidth - container.clientWidth;
+        if (max > 0) progressBar.style.width = ((container.scrollLeft / max) * 100) + "%";
+    }
+
+    // --- 5. PASS GENERATOR LOGIC ---
+    const inputName = document.getElementById('inputName');
+    const inputRoll = document.getElementById('inputRoll');
+    const cardName = document.getElementById('cardName');
+    const cardRoll = document.getElementById('cardRoll');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const ticketCard = document.getElementById('ticketCard');
+
+    // Live Inputs
+    inputName.addEventListener('input', e => {
+        const val = e.target.value;
+        cardName.textContent = val.length > 0 ? val : "YOUR NAME";
+    });
+    inputRoll.addEventListener('input', e => {
+        const val = e.target.value;
+        cardRoll.textContent = val.length > 0 ? val.toUpperCase() : "MS21000";
+    });
+
+    // Download Handler
+    downloadBtn.addEventListener('click', () => {
+        const originalText = downloadBtn.textContent;
+        downloadBtn.textContent = "GENERATING...";
+        
+        // Flatten for capture
+        ticketCard.style.transform = "none";
+        ticketCard.style.transition = "none";
+
+        // Slight delay to ensure render
+        setTimeout(() => {
+            html2canvas(ticketCard, {
+                scale: 3, 
+                backgroundColor: null,
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Insomnia_Pass_${inputName.value || 'Souvenir'}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                downloadBtn.textContent = "SAVED!";
+                setTimeout(() => {
+                    downloadBtn.textContent = originalText;
+                    ticketCard.style.transition = ""; // Restore transition
+                }, 2000);
+            }).catch(err => {
+                console.error(err);
+                downloadBtn.textContent = "ERROR :(";
+                ticketCard.style.transition = "";
+            });
+        }, 100);
+    });
+
+    // Removed the mousemove tilt event listener entirely as requested.
 });
 </script>
 
