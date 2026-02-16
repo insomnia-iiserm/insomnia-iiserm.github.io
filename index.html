@@ -6,86 +6,131 @@
 <title>Insomnia 2026</title>
 
 <link rel="stylesheet" href="main.css">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Henny+Penny&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Henny+Penny&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 
 <style>
 /* =========================================
-   AUDIO PLAYER STYLES (Embedded for Speed)
+   SPOTIFY PLAYER STYLES
    ========================================= */
 
-.audio-player-container {
+.spotify-player {
     display: none; /* Hidden by default */
     align-items: center;
-    justify-content: center;
-    gap: 15px;
+    gap: 12px;
+    background: rgba(20, 20, 20, 0.85); /* Dark Spotify-ish background */
+    padding: 10px 16px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    width: fit-content;
     margin-top: 15px;
-    z-index: 20;
-    position: relative;
-    opacity: 0; /* For fade in */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
 }
 
-/* Play Button */
-.play-btn-circle {
-    width: 45px;
-    height: 45px;
+.spotify-player:hover {
+    transform: scale(1.02);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Album Art (Small Circle) */
+.spotify-art {
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    backdrop-filter: blur(4px);
+    overflow: hidden;
+    background: #333;
+    border: 2px solid #121212;
+    flex-shrink: 0;
+}
+
+.spotify-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Track Info + Progress Bar */
+.spotify-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 120px;
+    margin-right: 8px;
+}
+
+.track-name {
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.artist-label {
+    color: #b3b3b3;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Progress Bar Container */
+.progress-bg {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    margin-top: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* The actual moving bar */
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background-color: #1DB954; /* Spotify Green */
+    border-radius: 3px;
+    transition: width 0.1s linear;
+}
+
+/* Play Button (Green Circle) */
+.spotify-play-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #1DB954; /* Spotify Green */
+    border: none;
+    color: black;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
 }
 
-.play-btn-circle:hover {
-    background: #fff;
-    color: #000;
+.spotify-play-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(255,255,255,0.4);
+    background: #1ed760; /* Lighter Green */
 }
 
-/* Visualizer Bars */
-.music-visualizer {
-    display: flex;
-    align-items: flex-end;
-    gap: 3px;
-    height: 25px;
+.spotify-play-btn span {
+    display: block;
+    margin-left: 2px; /* Visual centering for triangle */
 }
 
-.bar {
-    width: 4px;
-    height: 4px;
-    background: #fff;
-    border-radius: 2px;
-    transition: height 0.1s ease;
-}
-
-/* Animation Class (Added via JS) */
-.music-visualizer.playing .bar {
-    animation: bounce 0.5s infinite ease-in-out alternate;
-}
-
-/* Staggered Animation for Wave Effect */
-.music-visualizer.playing .bar:nth-child(1) { animation-delay: 0.0s; }
-.music-visualizer.playing .bar:nth-child(2) { animation-delay: 0.1s; }
-.music-visualizer.playing .bar:nth-child(3) { animation-delay: 0.2s; }
-.music-visualizer.playing .bar:nth-child(4) { animation-delay: 0.3s; }
-.music-visualizer.playing .bar:nth-child(5) { animation-delay: 0.4s; }
-.music-visualizer.playing .bar:nth-child(6) { animation-delay: 0.3s; }
-.music-visualizer.playing .bar:nth-child(7) { animation-delay: 0.2s; }
-.music-visualizer.playing .bar:nth-child(8) { animation-delay: 0.1s; }
-
-@keyframes bounce {
-    0% { height: 4px; }
-    100% { height: 25px; }
+/* When paused (icon switch) */
+.spotify-play-btn.playing span {
+    margin-left: 0;
+    font-weight: 900;
+    font-size: 14px;
 }
 </style>
 
@@ -105,8 +150,8 @@
 
 <nav class="glass-nav" id="nav">
     <div class="nav-left nav-menu">
-        <a>Home</a>
-        <a>Events</a>
+        <a href="https://insomnia-iiserm.github.io/">Home</a>
+        <a href="/events">Events</a>
     </div>
 
     <div class="nav-center" id="navToggle">
@@ -116,8 +161,8 @@
     </div>
 
     <div class="nav-right nav-menu">
-        <a>Leaderboard</a>
-        <a>Contacts</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="https://insomnia-iiserm.github.io/#contact">Contacts</a>
     </div>
 </nav>
 
@@ -152,20 +197,29 @@
         <h2 id="artistName"></h2>
         <p id="eventDate"></p>
 
-        <div class="audio-player-container" id="swastikPlayer">
-            <button class="play-btn-circle" id="playBtn">
-                ▶
-            </button>
-            <div class="music-visualizer" id="visualizer">
-                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                <div class="bar"></div><div class="bar"></div>
+        <div class="spotify-player" id="swastikPlayer">
+            
+            <div class="spotify-art">
+                <img src="swastik.png" alt="Album Art">
             </div>
+
+            <div class="spotify-info">
+                <div class="track-name">Jogi</div>
+                <div class="artist-label">Swastik The Band</div>
+                <div class="progress-bg">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <button class="spotify-play-btn" id="playBtn">
+                <span>▶</span>
+            </button>
+
         </div>
 
     </div>
 
-    <div class="lineup-counter" id="lineupCounter">0 / 5</div>
+    <div class="lineup-counter" id="lineupCounter">0 / 3</div>
 
     <button class="reveal-btn" id="revealBtn">REVEAL LINEUP</button>
 
@@ -180,35 +234,26 @@
     <h2 class="section-title">FULL LINEUP</h2>
 
     <div class="lineup-grid">
+        
         <div class="lineup-main">
-            <img src="rahgir.png">
-            <div class="lineup-info">
-                <h3>RAHGIR</h3>
-                <div class="location-pill">22 Feb • FEST GROUND</div>
+            <img src="swastik.png"> <div class="lineup-info">
+                <h3>SWASTIK BAND</h3>
+                <div class="location-pill">22 Feb • 6–7 PM • FEST GROUND</div>
             </div>
         </div>
 
         <div class="lineup-side">
+            
             <div class="artist-card">
-                <img src="neptune-band.png">
-                <h4>BAND NEPTUNE</h4>
-                <div class="location-pill">22 Feb • FEST GROUND</div>
+                <img src="Ishan.png"> <h4>ISHAN KRISHAN</h4>
+                <div class="location-pill">21 Feb • 7–9 PM • FEST GROUND</div>
             </div>
+
             <div class="artist-card">
-                <img src="dj-mahrac.png">
-                <h4>DJ MAHRAC</h4>
-                <div class="location-pill">22 Feb • FEST GROUND</div>
+                <img src="Akshita.png"> <h4>AKSHITA MENGI</h4>
+                <div class="location-pill">22 Feb • 9:30–10 PM • FEST GROUND</div>
             </div>
-            <div class="artist-card">
-                <img src="dj-tuhina.png">
-                <h4>DJ TUHINA</h4>
-                <div class="location-pill">22 Feb • FEST GROUND</div>
-            </div>
-            <div class="artist-card">
-                <img src="naman-jain.png">
-                <h4>NAMAN JAIN</h4>
-                <div class="location-pill">21 Feb • LH7</div>
-            </div>
+            
         </div>
     </div>
 
@@ -243,7 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Player Elements
     const playerContainer = document.getElementById("swastikPlayer");
     const playBtn = document.getElementById("playBtn");
-    const visualizer = document.getElementById("visualizer");
+    const progressFill = document.getElementById("progressFill");
 
     // Nav
     const navToggle = document.getElementById("navToggle");
@@ -253,78 +298,70 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =====================================================
        AUDIO CONFIGURATION
        ===================================================== */
-    // Ensure 'swastik.mp3' is in your folder
     const swastikAudio = new Audio('swastik.mp3');
     swastikAudio.volume = 0.7;
     let isPlaying = false;
 
-    // --- PLAY BUTTON CLICK ---
+    // --- PLAY BUTTON LOGIC ---
     playBtn.addEventListener("click", () => {
         if(isPlaying) {
             swastikAudio.pause();
-            playBtn.textContent = "▶";
-            visualizer.classList.remove("playing");
+            playBtn.innerHTML = "<span>▶</span>";
+            playBtn.classList.remove("playing");
         } else {
             swastikAudio.play();
-            playBtn.textContent = "❚❚"; // Pause icon
-            visualizer.classList.add("playing");
+            playBtn.innerHTML = "<span>❚❚</span>"; // Pause Symbol
+            playBtn.classList.add("playing");
         }
         isPlaying = !isPlaying;
+    });
+
+    // --- PROGRESS BAR UPDATE ---
+    swastikAudio.addEventListener("timeupdate", () => {
+        if(swastikAudio.duration) {
+            const percent = (swastikAudio.currentTime / swastikAudio.duration) * 100;
+            progressFill.style.width = percent + "%";
+        }
     });
 
     // --- RESET ON END ---
     swastikAudio.addEventListener("ended", () => {
         isPlaying = false;
-        playBtn.textContent = "▶";
-        visualizer.classList.remove("playing");
+        playBtn.innerHTML = "<span>▶</span>";
+        playBtn.classList.remove("playing");
+        progressFill.style.width = "0%";
     });
 
 
     /* =====================================================
-       MOBILE NAV LOGIC
+       MOBILE NAV
        ===================================================== */
     let menuOpen = false;
 
     function openMenu(){
         if(!mobileMenu) return;
         mobileMenu.classList.add("open");
-        gsap.fromTo(mobileMenu,
-            {opacity:0, scale:.9},
-            {opacity:1, scale:1, duration:.45, ease:"power3.out"}
-        );
+        gsap.fromTo(mobileMenu, {opacity:0, scale:.9}, {opacity:1, scale:1, duration:.45, ease:"power3.out"});
         menuOpen = true;
     }
 
     function closeMenu(){
         if(!mobileMenu) return;
-        gsap.to(mobileMenu,{
-            opacity:0, scale:.9, duration:.35, ease:"power3.in",
-            onComplete:()=> mobileMenu.classList.remove("open")
-        });
+        gsap.to(mobileMenu,{opacity:0, scale:.9, duration:.35, ease:"power3.in", onComplete:()=> mobileMenu.classList.remove("open")});
         menuOpen = false;
     }
 
-    navToggle?.addEventListener("click", e=>{
-        e.stopPropagation();
-        menuOpen ? closeMenu() : openMenu();
-    });
-
-    document.addEventListener("click", e=>{
-        if(menuOpen && mobileMenu && !mobileMenu.contains(e.target) && !navToggle.contains(e.target)){
-            closeMenu();
-        }
-    });
+    navToggle?.addEventListener("click", e=>{ e.stopPropagation(); menuOpen ? closeMenu() : openMenu(); });
+    document.addEventListener("click", e=>{ if(menuOpen && mobileMenu && !mobileMenu.contains(e.target) && !navToggle.contains(e.target)){ closeMenu(); }});
 
 
     /* =====================================================
-       ARTIST DATA
+       ARTIST DATA (UPDATED)
        ===================================================== */
-    const artists=[
+    const artists = [
         {name:"Swastik Band", image:"swastik.png", date:"22 Feb • 6–7 PM • FEST GROUND"},
-        {name:"BAND NEPTUNE", image:"neptune-band.png", date:"22 Feb • 7–9 PM • FEST GROUND"},
-        {name:"DJ MAHRAC", image:"dj-mahrac.png", date:"22 Feb • 9–9:30 PM • FEST GROUND"},
-        {name:"DJ TUHINA", image:"dj-tuhina.png", date:"22 Feb • 9:30–10 PM • FEST GROUND"},
-        {name:"NAMAN JAIN", image:"naman-jain.png", date:"21 Feb • 6–7 PM • LH7"}
+        {name:"Ishan Krishan", image:"Ishan.png", date:"21 Feb • 7–9 PM • FEST GROUND"},
+        {name:"Akshita Mengi", image:"Akshita.png", date:"22 Feb • 9:30–10 PM • FEST GROUND"}
     ];
 
     let index = -1;
@@ -353,35 +390,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       UPDATE CONTENT & HANDLE AUDIO PLAYER
+       UPDATE CONTENT
        ===================================================== */
     function updateContent(i){
         const a = artists[i];
         
-        // Update Text/Image
         imgEl.src = a.image;
         nameEl.textContent = a.name;
         dateEl.textContent = a.date;
         counterEl.textContent = `${i+1} / ${artists.length}`;
 
-        // --- SPECIAL LOGIC FOR SWASTIK ---
+        // --- SHOW PLAYER ONLY FOR SWASTIK ---
         if(a.name === "Swastik Band") {
-            // Show player with fade in
             playerContainer.style.display = "flex";
-            gsap.fromTo(playerContainer,
-                {opacity: 0, y: 10},
-                {opacity: 1, y: 0, duration: 0.5, delay: 0.3}
-            );
+            gsap.fromTo(playerContainer, {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: 0.5, delay: 0.2, ease: "back.out(1.7)"});
         } else {
-            // Hide player & Stop music if moving to next artist
             playerContainer.style.display = "none";
             
+            // Stop Audio if moving to next artist
             if(isPlaying) {
                 swastikAudio.pause();
                 swastikAudio.currentTime = 0;
                 isPlaying = false;
-                playBtn.textContent = "▶";
-                visualizer.classList.remove("playing");
+                playBtn.innerHTML = "<span>▶</span>";
+                playBtn.classList.remove("playing");
+                progressFill.style.width = "0%";
             }
         }
     }
@@ -394,48 +427,27 @@ document.addEventListener("DOMContentLoaded", () => {
         if(locked) return;
         locked = true;
 
-        /* Preload next image to ensure smooth swap */
         const img = new Image();
         img.src = artists[i].image;
-        await new Promise(r=>{
-            if(img.complete) r();
-            else img.onload = r;
-        });
+        await new Promise(r=>{ if(img.complete) r(); else img.onload = r; });
 
-        /* GSAP Animation Timeline */
-        const tl = gsap.timeline({
-            defaults:{ease:"power3.inOut"},
-            onComplete:()=> locked=false
-        });
+        const tl = gsap.timeline({ defaults:{ease:"power3.inOut"}, onComplete:()=> locked=false });
 
-        /* Step 1: Fade out old info */
         tl.to(imgEl,{opacity:0, scale:.95, duration:.35})
           .to(".artist-info",{opacity:0, y:20, duration:.35},"<")
-
-        /* Step 2: Swap Content (Invisible moment) */
-        .add(()=>{
+          .add(()=>{
             updateContent(i);
             artistBox.classList.remove("masked");
-        })
-
-        /* Step 3: Fade in new info */
-        .fromTo(imgEl,
-            {opacity:0, scale:1.05},
-            {opacity:1, scale:1, duration:.6}
-        )
-        .fromTo(".artist-info",
-            {opacity:0, y:20},
-            {opacity:1, y:0, duration:.6},
-            "-=.4"
-        );
+          })
+          .fromTo(imgEl, {opacity:0, scale:1.05}, {opacity:1, scale:1, duration:.6})
+          .fromTo(".artist-info", {opacity:0, y:20}, {opacity:1, y:0, duration:.6}, "-=.4");
     }
 
 
     /* =====================================================
-       BUTTON LOGIC
+       NEXT BUTTON LOGIC
        ===================================================== */
     function nextArtist(){
-        // Initial Click
         if(index === -1){
             index = 0;
             showArtist(index);
@@ -443,24 +455,14 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // End of Lineup
         if(index === artists.length - 1){
             document.body.classList.add("lineup-complete");
             revealBtn.textContent = "SEE FULL LINEUP ↓";
-            
-            // Stop music if playing
-            if(isPlaying) {
-                swastikAudio.pause();
-                isPlaying = false;
-            }
-
-            setTimeout(()=>{
-                window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
-            }, 400);
+            if(isPlaying) { swastikAudio.pause(); isPlaying = false; } // Safety stop
+            setTimeout(()=>{ window.scrollTo({ top: window.innerHeight, behavior: "smooth" }); }, 400);
             return;
         }
 
-        // Next Artist
         index++;
         showArtist(index);
     }
@@ -469,19 +471,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       SCROLL CONTROL (Optional)
+       SCROLL LOCK
        ===================================================== */
-    window.addEventListener("wheel", e=>{
-        if(!document.body.classList.contains("lineup-complete")){
-            e.preventDefault();
-        }
-    },{passive:false});
-
-    window.addEventListener("touchmove", e=>{
-        if(!document.body.classList.contains("lineup-complete")){
-            e.preventDefault();
-        }
-    },{passive:false});
+    window.addEventListener("wheel", e=>{ if(!document.body.classList.contains("lineup-complete")){ e.preventDefault(); }},{passive:false});
+    window.addEventListener("touchmove", e=>{ if(!document.body.classList.contains("lineup-complete")){ e.preventDefault(); }},{passive:false});
 
 });
 </script>
