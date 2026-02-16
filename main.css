@@ -473,7 +473,8 @@ bottom:-2vh;
 }
 
 .artist img{
-width:100%;
+min-width:100%;
+max-height: 50vh;
 }
 
 /* text */
