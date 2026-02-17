@@ -1734,3 +1734,111 @@ height:40px;
     }
 }
 
+
+/* =========================================
+   TEAM DOSSIER (PHOTO EDITION)
+   ========================================= */
+.team-section {
+    padding: 100px 20px;
+    background: #000;
+}
+
+.dossier-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.dossier-card {
+    height: 400px;
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    /* Cyber-cut corner */
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 88% 100%, 0 100%);
+}
+
+/* Photo Layer */
+.dossier-img {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center top;
+    filter: grayscale(100%) brightness(0.4);
+    opacity: 0.3;
+    transition: all 0.6s ease;
+    z-index: 1;
+}
+
+/* Content Layer */
+.dossier-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 20px;
+    z-index: 2;
+    background: linear-gradient(to top, #000 40%, transparent);
+}
+
+.dossier-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 3px; height: 0%;
+    background: #F4C430;
+    transition: 0.4s ease;
+    z-index: 3;
+}
+
+/* Hover State */
+.dossier-card:hover {
+    border-color: #F4C430;
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(244, 196, 48, 0.1);
+}
+
+.dossier-card:hover .dossier-img {
+    filter: grayscale(0%) brightness(0.7);
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.dossier-card:hover::before {
+    height: 100%;
+}
+
+.dossier-id {
+    font-family: 'Orbitron', sans-serif;
+    color: #F4C430;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.dossier-name {
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.dossier-status {
+    font-family: 'Montserrat', sans-serif;
+    color: #1DB954;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+@media (max-width: 768px) {
+    .dossier-card { height: 350px; }
+    .dossier-name { font-size: 1.2rem; }
+    .dossier-img { opacity: 0.6; filter: grayscale(50%) brightness(0.5); } /* Better visibility on mobile without hover */
+}
