@@ -95,7 +95,7 @@
         </div>
     </div>
 
-    <div class="lineup-counter" id="lineupCounter">0 / 3</div>
+    <div class="lineup-counter" id="lineupCounter">0 / 4</div>
     <button class="reveal-btn" id="revealBtn">REVEAL LINEUP</button>
     <div class="stage-lights"><div></div><div></div><div></div></div>
 </section>
@@ -119,7 +119,7 @@
                 <div class="cyber-details">
                     <span><i class="icon">📅</i> 22 FEB</span>
                     <span><i class="icon">📍</i> FEST GROUND</span>
-                    <span><i class="icon">⌚</i> 6:00 PM</span>
+                    <span><i class="icon">⌚</i> 8:30 PM</span>
                 </div>
             </div>
             <div class="card-border"></div>
@@ -134,7 +134,7 @@
                 <div class="cyber-tag" style="border-color: #1DB954; color:#1DB954;">FEATURING</div>
                 <h3>ISHAN KRISHAN</h3>
                 <div class="cyber-details">
-                    <span>21 FEB • 7 PM • FEST GROUND</span>
+                    <span>21 FEB • 6 PM • LH7</span>
                 </div>
             </div>
             <div class="card-border"></div>
@@ -149,7 +149,22 @@
                 <div class="cyber-tag" style="border-color: #1DB954; color:#1DB954;">FEATURING</div>
                 <h3>AKSHITA MENGI</h3>
                 <div class="cyber-details">
-                    <span>22 FEB • 9:30 PM • FEST GROUND</span>
+                    <span>22 FEB • 6 PM • FEST GROUND</span>
+                </div>
+            </div>
+            <div class="card-border"></div>
+        </div>
+
+        <div class="cyber-card">
+            <div class="cyber-img">
+                <img src="djmadd.png" alt="Akshita Mengi">
+                <div class="cyber-overlay"></div>
+            </div>
+            <div class="cyber-content">
+                <div class="cyber-tag" style="border-color: #1DB954; color:#1DB954;">FEATURING</div>
+                <h3>DJ MADD</h3>
+                <div class="cyber-details">
+                    <span>22 FEB • 10 PM • FEST GROUND</span>
                 </div>
             </div>
             <div class="card-border"></div>
@@ -574,9 +589,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- 3. LINEUP REVEAL LOGIC ---
     const artists = [
-        {name:"Swastik Band", image:"swastik.png", date:"22 Feb • 6–7 PM • FEST GROUND"},
-        {name:"Ishan Krishan", image:"Ishan.png", date:"21 Feb • 7–9 PM • FEST GROUND"},
-        {name:"Akshita Mengi", image:"Akshita.png", date:"22 Feb • 9:30–10 PM • FEST GROUND"}
+        {name:"Swastik Band", image:"swastik.png", date:"22 Feb • 8:30 PM • FEST GROUND"},
+        {name:"Ishan Krishan", image:"Ishan.png", date:"21 Feb • 6 PM • LH 7"},
+        {name:"Akshita Mengi", image:"Akshita.png", date:"22 Feb • 6 PM • FEST GROUND"},
+        {name:"DJ MADD", image:"../djmadd.png", date:"22 Feb • 10 PM • FEST GROUND"}
     ];
     let index = -1;
     let locked = false;
